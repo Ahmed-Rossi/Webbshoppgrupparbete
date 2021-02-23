@@ -1,31 +1,20 @@
 <?php
-
-/****************************************
- * 
- *                READ
- * Läs tabellen contacts från databasen
- * Presentera resultatet i en HTML-tabell
- * 
- ***************************************/
-
 // Hämta $conn (en instans av PDO)
 require_once("database.php");
 
 // Förbered en SQL-sats
-  $stmt = $conn->prepare("SELECT * FROM produkt");
+$stmt = $conn->prepare("SELECT * FROM produkt");
 
 // Kör SQL-satsen
 $stmt->execute();
 
-// Hämta alla rader som finns i contacts
-// fetchAll()
 // Returns an array containing all of the result set rows
 $result = $stmt->fetchAll();
 
 $table = "";
 foreach ($result as $key => $value) {
-    $id = $value['produktid'];
-    $table .= "
+  $id = $value['produktid'];
+  $table .= "
     
     
 <div class='col-lg-4'>
@@ -46,11 +35,7 @@ foreach ($result as $key => $value) {
   ";
 }
 
-
-
 echo $table;
-
-
  /*
  echo "<hr><pre>";
  print_r($result);

@@ -56,44 +56,32 @@
 
 
 <?php
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
-/****************************************
- * 
- *                READ
- * Läs tabellen contacts från databasen
- * Presentera resultatet i en HTML-tabell
- * 
- ***************************************/
+  // Hämta $conn (en instans av PDO)
+  require_once("database.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "GET"){
+  $produktID = $_GET['produktid'];
 
- // Hämta $conn (en instans av PDO)
- require_once ("database.php");
+  // Förbered en SQL-sats
+  $stmt = $conn->prepare("SELECT * FROM produkt WHERE produktid=$produktID");
 
- $produktID = $_GET['produktid'];
+  // Kör SQL-satsen
+  $stmt->execute();
 
- // Förbered en SQL-sats
- $stmt = $conn->prepare("SELECT * FROM produkt WHERE produktid=$produktID");
+  // Hämta alla rader som finns i contacts
+  // fetchAll()
+  // Returns an array containing all of the result set rows
+  $result = $stmt->fetchAll();
 
- // Kör SQL-satsen
- $stmt->execute();
-
- // Hämta alla rader som finns i contacts
- // fetchAll()
- // Returns an array containing all of the result set rows
- $result = $stmt->fetchAll();
-
- $table = "
+  $table = "
     <table class='table table-hover'>
     <tr>
 
     </tr>
     ";
 
- foreach($result as $key => $value){
-
-
-    //$id = $value['produktid'];  // Detta är en primärnyckel
+  foreach ($result as $key => $value) {
 
     $table .= "
         <tr>
@@ -118,16 +106,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET"){
             </tr>
         </tr>
     ";
+  }
 
+  $table .= "</table>";
 
- }
-
- $table .= "</table>";
-
- echo $table;
+  echo $table;
 }
 ?>
 
 <br><br><br>
 <?php
-require_once ("order.php");
+require_once("order.php");
